@@ -30,6 +30,8 @@ void loop() {
   if (success) {
     if((myuid[0] == uid[0]) && (myuid[1] == uid[1]) && (myuid[2] == uid[2]) && (myuid[3] == uid[3])) {
       Serial.println("true");
+    } else {
+      Serial.println("It's not my UID");
     }
   delay(1000);
   }
