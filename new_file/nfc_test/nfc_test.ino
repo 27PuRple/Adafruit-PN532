@@ -29,7 +29,7 @@ void setup() {
   Serial.println("Waiting for an ISO14443A card");
 }
 
-void loop() {
+void loop() {  
   servo.attach(servo_pin);
   servo.write(0);
   
@@ -39,6 +39,11 @@ void loop() {
   success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, &uid[0], &uidLength);
   
   if (success) {
+    Serial.println(""); Serial.print("UID : ");
+    for (uint8_t i = 0; i < uidLength; i++) {
+      Serial.print(uid[i]); Serial.print(" ");
+    }
+    Serial.println("");
     if((myuid[0] == uid[0]) && (myuid[1] == uid[1]) && (myuid[2] == uid[2]) && (myuid[3] == uid[3])) {
       Serial.println("true");
       servo.write(90);
