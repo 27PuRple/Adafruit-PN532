@@ -1,3 +1,4 @@
+#include <Servo.h>
 #include <Wire.h>
 #include <SPI.h>
 #include <Adafruit_PN532.h>
@@ -7,11 +8,14 @@
 #define PN532_SS   (10)
 #define PN532_MISO (12)
 
+#define servo_pin 9
 #define led_pin 2
 
 Adafruit_PN532 nfc(PN532_SCK, PN532_MISO, PN532_MOSI, PN532_SS);
 
 uint8_t myuid[] = {71, 87, 133, 123};
+
+Servo servo;
 
 void setup() {
   pinMode(led_pin, OUTPUT);
@@ -26,6 +30,9 @@ void setup() {
 }
 
 void loop() {
+  servo.attach(servo_pin);
+  servo.write(0);
+  
   boolean success;
   uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 };
   uint8_t uidLength;
@@ -34,7 +41,10 @@ void loop() {
   if (success) {
     if((myuid[0] == uid[0]) && (myuid[1] == uid[1]) && (myuid[2] == uid[2]) && (myuid[3] == uid[3])) {
       Serial.println("true");
-      digitalWrite(led_pin, HIGH); delay(1500); digitalWrite(led_pin, LOW);
+      servo.write(90);
+      digitalWrite(led_pin, HIGH); delay(2000); digitalWrite(led_pin, LOW);
+      servo.write(0);
+      servo.detach();
     } else {
       Serial.println("It's not my UID");
       digitalWrite(led_pin, HIGH); delay(300);
